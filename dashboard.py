@@ -59,7 +59,7 @@ st.sidebar.header("⚙️ Filtro Principal")
 
 # Filtro de Origem (Mantido na Sidebar)
 origem_selecionada = st.sidebar.multiselect(
-    "1. Origem dos Dados:",
+    "Origem dos dados:",
     options=df_main['ORIGEM'].unique(),
     default=df_main['ORIGEM'].unique()
 )
@@ -73,7 +73,7 @@ if df_filtered.empty:
 
 # --- FUNÇÕES DE VISUALIZAÇÃO ---
 
-def plot_gauge_score(df, title="Índice Médio de Satisfação"):
+def plot_gauge_score(df, title="Índice médio de satisfação"):
     """Cria o termômetro com cores fortes."""
     avg_score = df['PONTUACAO'].mean()
     
@@ -109,7 +109,7 @@ def plot_heatmap_setor_categoria(df):
         color_continuous_scale=px.colors.diverging.RdYlGn, 
         zmin=-1, 
         zmax=1,
-        title="Mapa de Calor: Média de Satisfação (Setor vs. Categoria)",
+        title="Mapa de calor: média de satisfação (Setor vs. Categoria)",
         labels={'color': 'Pontuação Média', 'x': 'Categorias (Temas)', 'y': 'Setores / Unidades'}
     )
     fig.update_layout(height=600, font_color=PRETO,
@@ -131,7 +131,7 @@ def plot_sunburst_hierarchy(df):
         color='Média_Satisfacao',
         color_continuous_scale=px.colors.diverging.RdYlGn,
         range_color=[-1, 1],
-        title="Hierarquia de Avaliação: Satisfação por Origem, Setor e Unidade"
+        title="Hierarquia de avaliação: Satisfação por origem, setor e unidade"
     )
     fig.update_layout(height=650, margin=dict(t=50, b=10, l=10, r=10), font_color=PRETO)
     return fig
@@ -153,8 +153,8 @@ def plot_sentiment_bar(df):
         y='Total',
         color='SENTIMENTO_TEXTO',
         color_discrete_map=color_map,
-        title="Distribuição das Respostas por Sentimento",
-        labels={'SENTIMENTO_TEXTO': 'Sentimento', 'Total': 'Contagem de Respostas'}
+        title="Distribuição das respostas por sentimento",
+        labels={'SENTIMENTO_TEXTO': 'Sentimento', 'Total': 'Contagem de respostas'}
     )
     fig.update_layout(font_color=PRETO, xaxis_title="Sentimento", yaxis_title="Contagem")
     fig.update_xaxes(showgrid=False)
@@ -163,10 +163,10 @@ def plot_sentiment_bar(df):
 
 # --- LAYOUT DO DASHBOARD (Em 3 Linhas de KPI) ---
 
-st.header("Resumo da Avaliação Institucional")
+st.header("Resumo da avaliação institucional")
 
 # Linha 1: Satisfação Média Geral (Termômetro)
-st.subheader("1. 🎯 Satisfação Média Geral")
+st.subheader("🎯 Satisfação média geral")
 col_gauge, col_spacer = st.columns([1, 4]) 
 
 with col_gauge:
@@ -176,13 +176,13 @@ st.markdown("---")
 
 
 # Linha 2: Volume de Dados e Média por Origem
-st.subheader("2. 📈 Volume de Dados e Comparativo por Origem")
+st.subheader("📈 Volume de dados e comparativo por origem")
 col_volume, col_bar = st.columns([1, 4])
 
 with col_volume:
     total_respostas = df_filtered.shape[0]
-    st.metric(label="Total de Respostas", value=f"{total_respostas:,}".replace(',', '.'))
-    st.markdown(f"**Origens Incluídas:** {', '.join(origem_selecionada)}")
+    st.metric(label="Total de respostas", value=f"{total_respostas:,}".replace(',', '.'))
+    st.markdown(f"**Origens incluídas:** {', '.join(origem_selecionada)}")
 
 with col_bar:
     df_origem_agg = df_filtered.groupby('ORIGEM')['PONTUACAO'].mean().sort_values(ascending=False).reset_index()
@@ -191,16 +191,16 @@ with col_bar:
         x='ORIGEM', 
         y='PONTUACAO', 
         color_discrete_sequence=[COR_SECUNDARIA],
-        title="Pontuação Média por Origem"
+        title="Pontuação média por origem"
     )
-    fig_bar.update_layout(font_color=PRETO, xaxis_title="", yaxis_title="Pontuação Média", height=300, margin=dict(t=50, b=0, l=0, r=0))
+    fig_bar.update_layout(font_color=PRETO, xaxis_title="", yaxis_title="Pontuação média", height=300, margin=dict(t=50, b=0, l=0, r=0))
     st.plotly_chart(fig_bar, use_container_width=True)
 
 st.markdown("---")
 
 
 # Linha 3: Distribuição de Sentimento (Legendas Claras)
-st.subheader("3. 🔍 Distribuição Detalhada do Sentimento")
+st.subheader("🔍 Distribuição detalhada do sentimento")
 col_sentiment, col_spacer2 = st.columns([3, 2])
 
 with col_sentiment:
@@ -212,24 +212,24 @@ st.markdown("---")
 # -------------------------------------------------------------
 # Quarta Seção: MAPA DE CALOR + FILTROS DE DETALHE
 # -------------------------------------------------------------
-st.subheader("🔥 Mapa de Calor: Identificação Rápida de Pontos Críticos")
+st.subheader("🔥 Mapa de calor: identificação rápida de pontos críticos")
 
 # Filtros de detalhe (Setor e Categoria) MOVIDOS para perto do Mapa de Calor
 col_filtros_mapa, col_grafico_mapa = st.columns([1, 4])
 
 with col_filtros_mapa:
-    st.markdown("##### Ajuste de Visualização")
+    st.markdown("Ajuste de visualização")
     
     # Filtro de Setor
     setor_selecionado = st.multiselect(
-        "4. Setor:",
+        "Setor:",
         options=df_filtered['SETOR_CURSO'].unique(),
         default=df_filtered['SETOR_CURSO'].unique()
     )
     
     # Filtro de Categoria
     categoria_selecionada = st.multiselect(
-        "5. Categoria (Tema):",
+        "Categoria (Tema):",
         options=df_filtered['CATEGORIA'].unique(),
         default=df_filtered['CATEGORIA'].unique()
     )
@@ -251,7 +251,7 @@ st.markdown("---")
 # -------------------------------------------------------------
 # Quinta Seção: HIERARQUIA + DETALHES
 # -------------------------------------------------------------
-st.subheader("🌳 Hierarquia e Volume de Participação")
+st.subheader("🌳 Hierarquia e volume de participação")
 
 # Estrutura de colunas para colocar detalhes ao lado da Hierarquia
 col_hier_1, col_hier_2 = st.columns([2, 1])
@@ -263,10 +263,10 @@ with col_hier_1:
         st.warning("Sem dados para o Sunburst.")
 
 with col_hier_2:
-    st.markdown(f'<p> Mais Detalhes do Volume</p>', unsafe_allow_html=True)
+    st.markdown(f'<p> Mais detalhes do gráfico</p>', unsafe_allow_html=True)
     st.info("Clique nas fatias para filtrar o gráfico! A cor varia de **Insatisfeito (vermelho)** a **Satisfeito (verde)**, e o tamanho da fatia mostra o volume de respostas.")
     
-    st.markdown(f'<p> Top 5 Unidades/Cursos por Satisfação</p>', unsafe_allow_html=True)
+    st.markdown(f'<p> Top 5 unidades/cursos por satisfação</p>', unsafe_allow_html=True)
     if not df_filtered.empty:
         df_ranking = df_filtered.groupby('UNIDADE_ANALISE')['PONTUACAO'].mean().sort_values(ascending=False).head(5).reset_index()
         df_ranking.columns = ['Unidade', 'Média']
@@ -277,7 +277,7 @@ with col_hier_2:
 st.markdown("---")
 
 # Sexta Seção: Dados Brutos
-with st.expander("🔍 Ver Tabela de Dados Brutos Filtrados"):
+with st.expander("🔍 Ver tabela de dados brutos filtrados"):
     st.dataframe(df_filtered)
 
 # --- FIM DO DASHBOARD ---
