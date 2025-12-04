@@ -11,7 +11,9 @@ O objetivo é fornecer uma visão rápida do **índice de satisfação** (Sentim
 
 
 ------
+## Link do deploy 
 
+[Clique aqui](https://cpaufpr.streamlit.app/)
 
 ## 🚀 Como Rodar o Dashboard Localmente
 
